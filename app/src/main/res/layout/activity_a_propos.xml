@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/loginbackground"
+    tools:context=".outils.Apropos">
+
+    <include android:id="@+id/toolbar"
+        layout="@layout/activity_bar_layout"/>
+
+        <ImageView
+            android:id="@+id/enset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/enset"
+            android:layout_marginTop="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:id="@+id/projet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/enset"
+            android:layout_centerInParent="true"
+            android:text="Projet d'Android"
+            android:textSize="30dp"
+            android:textStyle="bold"/>
+
+        <TextView
+        android:id="@+id/encadre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/projet"
+        android:layout_centerInParent="true"
+        android:text="Encadré par Mme. Bouchra BOUIHI"
+        android:textSize="15dp"
+        android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/an"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="100dp"
+            android:text="Année universitaire : 2019/2020"
+            android:textSize="12dp"
+            android:textStyle="bold"/>
+
+    <ImageView
+        android:layout_width="173dp"
+        android:layout_height="141dp"
+        android:layout_above="@+id/an"
+        android:layout_below="@+id/encadre"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="68dp"
+        android:src="@drawable/glsid" />
+
+</RelativeLayout>
+

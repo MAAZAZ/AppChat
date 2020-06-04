@@ -4,7 +4,6 @@ public class User {
     private String id;
     private String imageUrl;
     private String Username;
-    private String etat;
 
     public User(){}
 
@@ -12,8 +11,6 @@ public class User {
         this.id = id;
         this.imageUrl = imageUrl;
         this.Username = username;
-        this.etat=etat;
-
     }
 
     public String getId() {
@@ -30,14 +27,6 @@ public class User {
 
     public String getUsername() {
         return Username;
-    }
-
-    public String getEtat() {
-        return etat;
-    }
-
-    public void setEtat(String etat) {
-        this.etat = etat;
     }
 
     public void setUsername(String username) {

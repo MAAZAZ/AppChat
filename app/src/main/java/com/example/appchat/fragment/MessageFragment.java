@@ -1,5 +1,6 @@
 package com.example.appchat.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,8 @@ import com.example.appchat.R;
 import com.example.appchat.adapter.UserAdapter;
 import com.example.appchat.modele.Chat;
 import com.example.appchat.modele.User;
+import com.example.appchat.notification.Token;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,9 +25,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 
 public class MessageFragment extends Fragment {
@@ -45,20 +51,24 @@ public class MessageFragment extends Fragment {
 
         fbuser= FirebaseAuth.getInstance().getCurrentUser();
         users_name=new ArrayList<>();
+        users=new ArrayList<>();
         reference= FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                users_name.clear();
-
                 for(DataSnapshot d: dataSnapshot.getChildren()){
                     Chat message=d.getValue(Chat.class);
-                    if(message.getEmitteur().equals(fbuser.getUid()))
-                        users_name.add(message.getRecepteur());
-                    if(message.getRecepteur().equals(fbuser.getUid()))
-                        users_name.add(message.getEmitteur());
+                    if(!users_name.contains(message.getEmitteur()) && !users_name.contains(message.getRecepteur())) {
+                        if (message.getEmitteur().equals(fbuser.getUid())) {
+                            users_name.add(message.getRecepteur());
+                        }
+                        if (message.getRecepteur().equals(fbuser.getUid())) {
+                            users_name.add(message.getEmitteur());
+                        }
+                    }
                 }
-               LireMessages();
+                //Log.d("users",users_name.toString());
+                LireMessages();
             }
 
             @Override
@@ -67,33 +77,41 @@ public class MessageFragment extends Fragment {
             }
         });
 
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Activity) getContext(),new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String newToken = instanceIdResult.getToken();
+                updateToken(newToken);
+            }
+        });
+
         return view;
     }
 
-    private void LireMessages(){
-        users=new ArrayList<>();
+    private void updateToken(String token) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token tok = new Token(token);
+        reference.child(fbuser.getUid()).setValue(tok);
+    }
+
+     private void LireMessages(){
+        users.clear();
         reference2=FirebaseDatabase.getInstance().getReference("utilisateurs");
         reference2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()) {
                     User user = dataSnapshot1.getValue(User.class);
-                    users.clear();
                     for (String id : users_name) {
                         if (user.getId().equals(id)) {
-                            if (users.size() != 0) {
-                                for (User u : users) {
-                                    if (!user.getId().equals(u.getId())) {
-                                        users.add(user);
-                                    }
-                                }
-                            } else {
                             users.add(user);
-                            }
                         }
                     }
                 }
-                userAdapter=new UserAdapter(getContext(), users,true);
+                //for(User u : users)
+                  //  Log.e("users_find",u.getUsername());
+
+                userAdapter=new UserAdapter(getContext(), users);
                 recyclerView.setAdapter(userAdapter);
             }
 

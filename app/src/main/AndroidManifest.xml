@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.appchat">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,22 +13,36 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".compte.newPassword"
-            android:parentActivityName=".compte.Login"/>
-        <activity android:name=".message.Messages" />
-        <activity android:name=".principalAcitivity.MainActivity" />
+        <activity android:name=".outils.Apropos"
+            android:parentActivityName=".principalActivite.MainActivity"  />
+        <activity
+            android:name=".compte.newPassword"
+            android:parentActivityName=".compte.Login" />
+        <activity
+            android:name=".message.Messages"
+            android:parentActivityName=".principalActivite.MainActivity" />
+        <activity android:name=".principalActivite.MainActivity" />
         <activity android:name=".compte.Login" />
-        <activity android:name=".start.Bar_layout" />
+        <activity android:name=".outils.Bar_layout" />
         <activity
             android:name=".compte.Inscription"
             android:parentActivityName=".compte.Login" />
-        <activity android:name=".start.Start">
+        <activity android:name=".outils.Start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".notification.MyFirebaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

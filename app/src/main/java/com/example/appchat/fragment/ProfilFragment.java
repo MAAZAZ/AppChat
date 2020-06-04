@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import de.hdodenhof.circleimageview.CircleImageView;
+import maes.tech.intentanim.CustomIntent;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -21,14 +22,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.appchat.R;
-import com.example.appchat.adapter.UserAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -75,6 +73,7 @@ public class ProfilFragment extends Fragment {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                     startActivityForResult(intent, image_req);
+                    CustomIntent.customType(getContext(), "rotateout-to-rotatein");
                 }
             }
         });
@@ -117,7 +116,6 @@ public class ProfilFragment extends Fragment {
         reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Log.d("ProfilFragment", "Complete!" + uri);
                 setUserProfilUrl(uri);
             }
         });
@@ -137,7 +135,6 @@ public class ProfilFragment extends Fragment {
                 Toast.makeText(getActivity(), "Problème du connexion!", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
 }

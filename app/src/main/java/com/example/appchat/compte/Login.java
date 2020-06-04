@@ -3,9 +3,9 @@ package com.example.appchat.compte;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import maes.tech.intentanim.CustomIntent;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.appchat.principalAcitivity.MainActivity;
+import com.example.appchat.principalActivite.MainActivity;
 import com.example.appchat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -69,6 +69,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent =new Intent(Login.this, newPassword.class);
                 startActivity(intent);
+                CustomIntent.customType(Login.this, "fadein-to-fadeout");
             }
         });
 
@@ -77,6 +78,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent =new Intent(Login.this, Inscription.class);
                 startActivity(intent);
+                CustomIntent.customType(Login.this, "fadein-to-fadeout");
             }
         });
 

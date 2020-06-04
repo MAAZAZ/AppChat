@@ -1,4 +1,4 @@
-package com.example.appchat.principalAcitivity;
+package com.example.appchat.principalActivite;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -19,8 +20,8 @@ import com.example.appchat.compte.Login;
 import com.example.appchat.fragment.AmisFragment;
 import com.example.appchat.fragment.MessageFragment;
 import com.example.appchat.fragment.ProfilFragment;
-import com.example.appchat.modele.Chat;
 import com.example.appchat.modele.User;
+import com.example.appchat.outils.Apropos;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,8 +34,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
 
         toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 profil.setImageResource(R.drawable.defaultprofile);
             }
         });
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -126,30 +130,13 @@ public class MainActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(MainActivity.this, Login.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-            //finish();
+            return true;
+        }
+        if (item.getItemId() == R.id.apropos) {
+            Intent intent = new Intent(MainActivity.this, Apropos.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             return true;
         }
         return false;
-    }
-
-    private void etatUser(String etat) {
-        reference = FirebaseDatabase.getInstance().getReference("utilisateurs").child(authUser.getUid());
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("etat", etat);
-        reference.updateChildren(hashMap);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        String etat_enLigne = "En Ligne";
-        etatUser(etat_enLigne);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        String etat_horsLigne = "Hors Ligne";
-        etatUser(etat_horsLigne);
     }
 }

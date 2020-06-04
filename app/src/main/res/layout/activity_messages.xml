@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginLeft="25dp"
-            android:text="user"
+            android:text="Loading ..."
             android:textColor="@color/colorPrimary"
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
@@ -57,6 +57,7 @@
             android:id="@+id/message"
             android:layout_toLeftOf="@+id/send"
             android:layout_centerVertical="true"
+            android:inputType="textNoSuggestions"
             android:hint="Taper un message.."/>
 
         <Button

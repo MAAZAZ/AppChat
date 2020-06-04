@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.AmisFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <RelativeLayout
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="80dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recycleview"
-        android:layout_margin="5dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/user_item"
-        android:orientation="vertical"/>
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/recherche"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:hint="Chercher d'un(e) ami(e)" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleview"
+            android:layout_marginTop="40dp"
+            android:layout_below="@+id/recherche"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </RelativeLayout>
 
 </FrameLayout>

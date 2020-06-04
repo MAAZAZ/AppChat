@@ -4,4 +4,9 @@
     <item android:id="@+id/logout"
         android:title="Déconnexion"
         app:showAsAction="never"/>
+
+    <item android:id="@+id/apropos"
+        android:title="A propos"
+        app:showAsAction="never"/>
+
 </menu>

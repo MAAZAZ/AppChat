@@ -1,4 +1,4 @@
-package com.example.appchat.start;
+package com.example.appchat.outils;
 
 import androidx.appcompat.app.AppCompatActivity;
 

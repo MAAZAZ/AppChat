@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.appchat.compte.Login;
+import com.example.appchat.compte.newPassword;
+import com.example.appchat.fragment.AmisFragment;
 import com.example.appchat.message.Messages;
 import com.example.appchat.R;
 import com.example.appchat.modele.User;
@@ -22,17 +25,16 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import maes.tech.intentanim.CustomIntent;
 
 public class UserAdapter extends RecyclerView.Adapter {
 
     private Context context;
     private List<User> users;
-    private boolean isOnline;
 
-    public UserAdapter(Context context, List<User> users, boolean isOnline) {
+    public UserAdapter(Context context, List<User> users) {
         this.context = context;
         this.users = users;
-        this.isOnline = isOnline;
     }
 
     @NonNull
@@ -47,6 +49,7 @@ public class UserAdapter extends RecyclerView.Adapter {
         final User user = users.get(position);
 
         ((ViewHolder) holder).getUsername().setText(user.getUsername());
+
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference dateRef = storageRef.child("profilImages/" + user.getId() + ".jpeg");
@@ -64,25 +67,14 @@ public class UserAdapter extends RecyclerView.Adapter {
         });
 
 
-        if (isOnline) {
-            if (user.getEtat().equals("En Ligne")) {
-                ((ViewHolder) holder).getEtat().setVisibility(View.VISIBLE);
-                ((ViewHolder) holder).setEtat("En Ligne");
-            } else if (user.getEtat().equals("Hors Ligne")) {
-                ((ViewHolder) holder).getEtat().setVisibility(View.VISIBLE);
-                ((ViewHolder) holder).setEtat("Hors Ligne");
-
-            } else {
-                ((ViewHolder) holder).getEtat().setVisibility(View.GONE);
-            }
-        }
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Messages.class);
                 intent.putExtra("id", user.getId());
+                //intent.putExtra("name", user.getUsername());
                 context.startActivity(intent);
+                CustomIntent.customType(context, "fadein-to-fadeout");
             }
         });
     }
@@ -96,13 +88,11 @@ public class UserAdapter extends RecyclerView.Adapter {
 
         private TextView username;
         private ImageView profil_img;
-        private TextView etat;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             username = (TextView) itemView.findViewById(R.id.username);
             profil_img = (ImageView) itemView.findViewById(R.id.profile_image);
-            etat = (TextView) itemView.findViewById(R.id.etat);
         }
 
         public TextView getUsername() {
@@ -113,12 +103,5 @@ public class UserAdapter extends RecyclerView.Adapter {
             return profil_img;
         }
 
-        public TextView getEtat() {
-            return etat;
-        }
-
-        public void setEtat(String etat) {
-            this.etat.setText(etat);
-        }
     }
 }

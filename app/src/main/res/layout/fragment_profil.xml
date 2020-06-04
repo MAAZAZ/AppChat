@@ -3,22 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/loginbackground"
     tools:context=".fragment.ProfilFragment">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp">
-
         <RelativeLayout
+            android:background="@drawable/cadre_profil"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="60dp">
+
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="40dp"
                 android:text="Votre profil"
+                android:textColor="@color/colorPrimary"
                 android:textSize="20dp"
                 android:textStyle="bold"/>
 
@@ -28,7 +30,7 @@
                 android:layout_height="157dp"
                 android:background="@drawable/logo"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp" />
+                android:layout_marginTop="80dp" />
 
             <TextView
                 android:id="@+id/profil_name"
@@ -37,15 +39,12 @@
                 android:layout_below="@+id/profil_image"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="40dp"
+                android:textColor="@color/colorPrimary"
                 android:text="Email"
-                android:textSize="15dp"
+                android:textSize="18dp"
                 android:textStyle="bold" />
 
         </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
-
-
 
 </FrameLayout>

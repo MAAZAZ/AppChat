@@ -3,6 +3,7 @@ package com.example.appchat.compte;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import maes.tech.intentanim.CustomIntent;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,6 +53,7 @@ public class newPassword extends AppCompatActivity {
                                 Toast.makeText(newPassword.this,"Vous avez recu un message sur votre email pour recuperer le mot de passe",Toast.LENGTH_SHORT).show();
                                 Intent intent=new Intent(newPassword.this, Login.class);
                                 startActivity(intent);
+                                CustomIntent.customType(newPassword.this, "fadein-to-fadeout");
                             }
                             else
                             {
