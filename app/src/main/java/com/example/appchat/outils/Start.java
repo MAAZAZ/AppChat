@@ -13,6 +13,7 @@ public class Start extends AppCompatActivity {
 
     private static int time=4000;
 
+    // afficher le logo de l'application pendant 4 secondes
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

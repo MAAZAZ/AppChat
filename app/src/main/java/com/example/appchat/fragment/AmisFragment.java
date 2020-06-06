@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,9 @@ public class AmisFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
+    //liste des utilisateurs inscris
     private List<User> users;
+    //faire un recherche par le nom d'utilisateur
     private EditText recherche;
     private FirebaseUser fbr;
     private ImageView image;
@@ -43,15 +44,17 @@ public class AmisFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         users=new ArrayList<>();
+        //partie de navigation fragment
         View view= inflater.inflate(R.layout.fragment_amis, container, false);
         recyclerView=(RecyclerView) view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recherche=(EditText) view.findViewById(R.id.recherche);
         image=(ImageView)view.findViewById(R.id.image);
+        //recupperer tous les utilisateurs
         AllUsers();
         fbr=FirebaseAuth.getInstance().getCurrentUser();
-
+        //faire une recherche à travers le nom de l'utilisateur
         recherche.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -60,17 +63,25 @@ public class AmisFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!s.toString().equals("")) {
+                    //faire un requete en fonction de nom de l'utilisateur
+                    //doc : https://firebase.google.com/docs/database/rest/retrieve-data
+                    //Paginate data with query cursors
+                    //doc : https://firebase.google.com/docs/firestore/query-data/query-cursors
+                    //uf8ff : est un point de code très élevé dans la plage Unicode.
                     Query query = FirebaseDatabase.getInstance().getReference("utilisateurs").orderByChild("username").startAt(s.toString()).endAt(s + "\uf8ff");
                     query.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            //supprimer la liste des utilisateurs
                             users.clear();
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 User user = snapshot.getValue(User.class);
                                 if (!user.getId().equals(fbr.getUid())) {
+                                    //si le nom entré par l'utilisateur est correspond, alos il faut l'ajouter à la liste
                                     users.add(user);
                                 }
                             }
+                            // lier recyleview avec l'adapter des utilisateurs
                             userAdapter = new UserAdapter(getContext(), users);
                             recyclerView.setAdapter(userAdapter);
                         }
@@ -81,7 +92,8 @@ public class AmisFragment extends Fragment {
                     });
                 }
                 else{
-                    AllUsers();
+                    // si la chaine est vide, alors faire l'appel à la méthode allUsers()
+                   AllUsers();
                 }
             }
 
@@ -94,6 +106,7 @@ public class AmisFragment extends Fragment {
         return view;
     }
 
+    // recuprer tous les utilisateurs
     private void AllUsers(){
         users.clear();
         final FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();

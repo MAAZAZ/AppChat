@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import maes.tech.intentanim.CustomIntent;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -72,20 +73,25 @@ public class Messages extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //possibilité de retourner vers l'acvitité principale (fragment des messages)
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Messages.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                CustomIntent.customType(Messages.this, "fadein-to-fadeout");
             }
         });
 
+        //pour connecter au serveur de FCM (Firebase Cloud Messaging)
+        //utiliser pour les notifications
         apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
 
         recyclerView = findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
+        //Creer un vertical layout avec LinearLayoutManager
         recyclerView.setLayoutManager(linearLayoutManager);
 
         profil_img = (CircleImageView) findViewById(R.id.profile_image1);
@@ -94,18 +100,23 @@ public class Messages extends AppCompatActivity {
         send = (Button) findViewById(R.id.send);
         message = (TextView) findViewById(R.id.message);
 
+        //recevoir id de l'utilisateur choisi
         Intent intent = getIntent();
         final String userid = intent.getStringExtra("id");
 
         FBuser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //l'autre utilisateur
         reference = FirebaseDatabase.getInstance().getReference("utilisateurs").child(userid);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                username.setText(user.getUsername());
 
+                //ajouter son nom dans le toolbar
+                username.setText(user.getUsername());
+                //ajouter son image dans le toolbar
                 StorageReference storageRef = FirebaseStorage.getInstance().getReference();
                 StorageReference dateRef = storageRef.child("profilImages/" + user.getId() + ".jpeg");
                 dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -121,8 +132,7 @@ public class Messages extends AppCompatActivity {
                     }
                 });
 
-                profil_img.setImageResource(R.drawable.defaultprofile);
-
+                //lire les messages
                 LireMessages(FBuser.getUid(), userid, user.getImageUrl());
             }
 
@@ -176,6 +186,7 @@ public class Messages extends AppCompatActivity {
 
     // Envoyé un nouveau message permet d'envoyé une nouvelle notification vers l'utilisateur destinataire
     private void sendNotifiaction(String receiver, final String username, final String message){
+        //en utilisant les jettons
         DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Tokens");
         Query query = tokens.orderByKey().equalTo(receiver);
         query.addValueEventListener(new ValueEventListener() {
@@ -220,6 +231,8 @@ public class Messages extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //si l'utilisateur à recevoir ou envoyer un nouveau messages
+                //alors supprimer les messages avant et les lire à nouveau
                 messages.clear();
                 for (DataSnapshot dataSnap : dataSnapshot.getChildren()) {
                     Chat message = dataSnap.getValue(Chat.class);

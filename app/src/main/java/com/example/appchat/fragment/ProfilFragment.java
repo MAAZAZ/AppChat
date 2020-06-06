@@ -13,7 +13,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import maes.tech.intentanim.CustomIntent;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +50,7 @@ public class ProfilFragment extends Fragment {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         username.setText(firebaseUser.getEmail());
 
+        //service de firebase storage
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference dateRef = storageRef.child("profilImages/" + firebaseUser.getUid() + ".jpeg");
         dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -66,7 +66,7 @@ public class ProfilFragment extends Fragment {
             }
         });
 
-
+        // si l'utilisateur est cliqué sur l'image de profil
         img_profil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +85,7 @@ public class ProfilFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == image_req) {
+            //demande l'autorisation à accéder à la camera
             switch (resultCode) {
                 case Activity.RESULT_OK:
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
@@ -94,6 +95,7 @@ public class ProfilFragment extends Fragment {
         }
     }
 
+    //upload l'image
     private void handleUpload(Bitmap bitmap) {
         ByteArrayOutputStream Baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, Baos);
@@ -112,6 +114,7 @@ public class ProfilFragment extends Fragment {
         });
     }
 
+    //recuperer l'image avec la méthode getDownloadUrl()
     private void getDownloadUrl(StorageReference reference) {
         reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -121,8 +124,8 @@ public class ProfilFragment extends Fragment {
         });
     }
 
+    //changer l'image
     private void setUserProfilUrl(Uri uri) {
-
         UserProfileChangeRequest req = new UserProfileChangeRequest.Builder().setPhotoUri(uri).build();
         firebaseUser.updateProfile(req).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

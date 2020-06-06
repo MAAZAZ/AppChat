@@ -1,5 +1,6 @@
 package com.example.appchat.modele;
 
+//classe de l'utilisateur
 public class User {
     private String id;
     private String imageUrl;

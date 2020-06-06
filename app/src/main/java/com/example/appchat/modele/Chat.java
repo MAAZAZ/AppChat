@@ -1,5 +1,6 @@
 package com.example.appchat.modele;
 
+//classe des messages dans le chat
 public class Chat {
     private String emitteur;
     private String recepteur;

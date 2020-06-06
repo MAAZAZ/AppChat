@@ -55,7 +55,5 @@ public class Data {
         return sented;
     }
 
-    public void setSented(String sented) {
-        this.sented = sented;
-    }
+    public void setSented(String sented) { this.sented = sented; }
 }

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import de.hdodenhof.circleimageview.CircleImageView;
+import maes.tech.intentanim.CustomIntent;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //désactiver le clavier
+        //Pour résoudre le probleme de retourner de l'activité des messages vers l'activité de fragment des messages
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
@@ -67,12 +70,13 @@ public class MainActivity extends AppCompatActivity {
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference dateRef = storageRef.child("profilImages/" + authUser.getUid() + ".jpeg");
+        // recuperer l'image de profil de l'utilisateur
         dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri downloadUrl) {
                 Glide.with(MainActivity.this).load(downloadUrl.toString()).into(profil);
             }
-
+            //si il y'a un probleme de connexion, alors afficher l'image par défault
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -80,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //recuperer le nom d'utilisatuer pour le titre dans le toolbar
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -93,10 +98,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Garder le fragment des messages comme le fragment principal
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new MessageFragment()).commit();
         }
 
+        //menu des fragments
         menu.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -118,23 +125,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //menu de toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
+    //le choix de menu de toolbar
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.logout) {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(MainActivity.this, Login.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            CustomIntent.customType(MainActivity.this, "fadein-to-fadeout");
             return true;
         }
         if (item.getItemId() == R.id.apropos) {
             Intent intent = new Intent(MainActivity.this, Apropos.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            CustomIntent.customType(MainActivity.this, "fadein-to-fadeout");
             return true;
         }
         return false;

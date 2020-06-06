@@ -30,7 +30,6 @@ import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 
 public class MessageFragment extends Fragment {
@@ -53,11 +52,14 @@ public class MessageFragment extends Fragment {
         users_name=new ArrayList<>();
         users=new ArrayList<>();
         reference= FirebaseDatabase.getInstance().getReference("Chats");
+        //les messages
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot d: dataSnapshot.getChildren()){
                     Chat message=d.getValue(Chat.class);
+                    //tester si l'utilisateur actuel est l'un des deux : emitteur ou recepteur
+                    //si oui, ajouter le nom de l'autre utilisateur à la liste (username)
                     if(!users_name.contains(message.getEmitteur()) && !users_name.contains(message.getRecepteur())) {
                         if (message.getEmitteur().equals(fbuser.getUid())) {
                             users_name.add(message.getRecepteur());
@@ -68,6 +70,7 @@ public class MessageFragment extends Fragment {
                     }
                 }
                 //Log.d("users",users_name.toString());
+                //lire les messages
                 LireMessages();
             }
 
@@ -76,7 +79,8 @@ public class MessageFragment extends Fragment {
 
             }
         });
-
+        //creer un token de l'utilisateur connecté
+        // utiliser pour conncter à FCM à travers les notification envoyé et recu
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Activity) getContext(),new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
@@ -88,13 +92,17 @@ public class MessageFragment extends Fragment {
         return view;
     }
 
+    //creer un nouveau token correspond à l'utilisateur et ajouter à la base de données
     private void updateToken(String token) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
         Token tok = new Token(token);
         reference.child(fbuser.getUid()).setValue(tok);
     }
 
+    //lire les messages
      private void LireMessages(){
+        //si l'utilisateur envoye o recoit un message, la liste des utilisateurs doit faire un mise à jour
+         //resoudre le problème d'avoir meme utilisateur sur la meme page
         users.clear();
         reference2=FirebaseDatabase.getInstance().getReference("utilisateurs");
         reference2.addValueEventListener(new ValueEventListener() {
@@ -103,6 +111,8 @@ public class MessageFragment extends Fragment {
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()) {
                     User user = dataSnapshot1.getValue(User.class);
                     for (String id : users_name) {
+                        // à travers la liste des noms de l'utilisateurs
+                        // recupprer les utilisateurs dans la base de données
                         if (user.getId().equals(id)) {
                             users.add(user);
                         }
@@ -111,6 +121,7 @@ public class MessageFragment extends Fragment {
                 //for(User u : users)
                   //  Log.e("users_find",u.getUsername());
 
+                //lier recyclerView avec adapter de l'utilisateur
                 userAdapter=new UserAdapter(getContext(), users);
                 recyclerView.setAdapter(userAdapter);
             }

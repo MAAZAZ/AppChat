@@ -10,6 +10,7 @@ import com.example.appchat.R;
 public class Apropos extends AppCompatActivity {
 
     private Toolbar toolbar;
+    //Projet d'android
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,7 +1,6 @@
 package com.example.appchat.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,10 @@ public class MessageAdapter extends RecyclerView.Adapter {
     private Context context;
     private List<Chat> messages;
     private String image_profil;
+
+    //si le message envoyé par l'utilisateur
     public static int nb_message_right=1;
+    //si le message recu par l'utilisateur
     public static int nb_message_left=0;
     private FirebaseUser fbrusr;
 
@@ -36,9 +38,11 @@ public class MessageAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
+        //si le message envoyé par l'utilisateur => faire l'appel à l'activité chat_item_right
         if(viewType==nb_message_right) {
              view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
         }
+        //si le message recu par l'utilisateur => faire l'appel à l'activité chat_item_left
         else{
             view = LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false);
         }
@@ -80,6 +84,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         fbrusr=FirebaseAuth.getInstance().getCurrentUser();
+        //position du message
         if(messages.get(position).getEmitteur().equals(fbrusr.getUid()))
             return nb_message_right;
         else

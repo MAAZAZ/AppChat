@@ -10,9 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.appchat.compte.Login;
-import com.example.appchat.compte.newPassword;
-import com.example.appchat.fragment.AmisFragment;
 import com.example.appchat.message.Messages;
 import com.example.appchat.R;
 import com.example.appchat.modele.User;
@@ -47,10 +44,8 @@ public class UserAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
         final User user = users.get(position);
-
         ((ViewHolder) holder).getUsername().setText(user.getUsername());
-
-
+        //recuperer l'image de profil de l'utilisateur
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference dateRef = storageRef.child("profilImages/" + user.getId() + ".jpeg");
         dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -62,6 +57,7 @@ public class UserAdapter extends RecyclerView.Adapter {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                //cas de problème de connexion
                 ((ViewHolder) holder).getProfil_img().setImageResource(R.drawable.defaultprofile);
             }
         });

@@ -38,14 +38,17 @@ public class newPassword extends AppCompatActivity {
         email=(TextView) findViewById(R.id.send_pass);
         btn_env=(Button) findViewById(R.id.send);
         fb=FirebaseAuth.getInstance();
+        //si l'utilisateur clique sur le buttom d'envoyé
         btn_env.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //la barre de l'email est vide
                 if(email.getText().toString().equals("")){
                     Toast.makeText(newPassword.this,"Vous n'avez pas saisi votre email",Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
+                    //la méthode ci-dessous permet d'envoyer le mot de passe d'un email à travers le service de Firebase
                     fb.sendPasswordResetEmail(email.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -57,6 +60,7 @@ public class newPassword extends AppCompatActivity {
                             }
                             else
                             {
+                                //sinon afficher l'erreur lier avec l'exception du Firebase
                                 String error=task.getException().getMessage();
                                 Toast.makeText(newPassword.this,error,Toast.LENGTH_SHORT).show();
                             }

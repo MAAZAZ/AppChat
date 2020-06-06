@@ -38,6 +38,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onStart() {
         user=FirebaseAuth.getInstance().getCurrentUser();
+        //l'utilisateur est encore authentifier
         if(user!=null){
             Intent intent=new Intent(Login.this, MainActivity.class);
             startActivity(intent);
@@ -64,6 +65,7 @@ public class Login extends AppCompatActivity {
         spinner=(ProgressBar)findViewById(R.id.progressBar);
         spinner.setVisibility(View.GONE);
 
+        // si l'utilisateur est cliqué sur mot passe oublié
         newpassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +75,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        // si l'utilisateur est cliqué sur le button d'inscription
         btn_enr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,18 +87,24 @@ public class Login extends AppCompatActivity {
 
     }
 
+    // si l'utilisateur est cliqué sur connexion=login
     public void login(View view){
+        //Loading icon
         spinner.setVisibility(View.VISIBLE);
+        // si l'email & mot de passe ne sont pas vides
         if(!email.getText().toString().isEmpty() && !password.getText().toString().isEmpty()){
+            // authentification par email & password
             auth.signInWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
+                    // si l'authentification est bien vérifié
                     if(task.isSuccessful()){
                         Intent intent =new Intent(Login.this,MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         finish();
                     }
+                    // sinon
                     else{
                         password.setText("");
                         Toast.makeText(Login.this, "Votre email ou mot de passe est incorrect", Toast.LENGTH_SHORT).show();
@@ -103,6 +112,7 @@ public class Login extends AppCompatActivity {
                 }
             });
         }
+        // si l'utilisateur n'est pas saisi l'email ou le mot de passe
         else{
             password.setText("");
             Toast.makeText(Login.this, "Votre email ou mot de passe est incorrect", Toast.LENGTH_SHORT).show();

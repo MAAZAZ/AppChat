@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.example.appchat.R;
 
 public class Bar_layout extends AppCompatActivity {
-
+    // toolbar
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
