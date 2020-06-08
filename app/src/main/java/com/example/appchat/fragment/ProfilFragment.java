@@ -40,7 +40,7 @@ public class ProfilFragment extends Fragment {
     private TextView username;
     private FirebaseUser firebaseUser;
     private StorageReference storageReference;
-    private static int image_req = 10001;
+    private static int image_req = 1;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

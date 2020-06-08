@@ -102,6 +102,7 @@ public class Login extends AppCompatActivity {
                         Intent intent =new Intent(Login.this,MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
+                        CustomIntent.customType(Login.this, "fadein-to-fadeout");
                         finish();
                     }
                     // sinon
