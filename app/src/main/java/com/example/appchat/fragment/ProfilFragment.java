@@ -104,7 +104,7 @@ public class ProfilFragment extends Fragment {
         storageReference.putBytes(Baos.toByteArray()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                getDownloadUrl(storageReference);
+                //getDownloadUrl(storageReference);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
