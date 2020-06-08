@@ -104,7 +104,7 @@ public class ProfilFragment extends Fragment {
         storageReference.putBytes(Baos.toByteArray()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                //getDownloadUrl(storageReference);
+                Toast.makeText(getActivity(), "Votre image de profil est bien modifié!", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -113,31 +113,4 @@ public class ProfilFragment extends Fragment {
             }
         });
     }
-
-    //recuperer l'image avec la méthode getDownloadUrl()
-    private void getDownloadUrl(StorageReference reference) {
-        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                setUserProfilUrl(uri);
-            }
-        });
-    }
-
-    //changer l'image
-    private void setUserProfilUrl(Uri uri) {
-        UserProfileChangeRequest req = new UserProfileChangeRequest.Builder().setPhotoUri(uri).build();
-        firebaseUser.updateProfile(req).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getActivity(), "Vous avez changé votre image de profil", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), "Problème du connexion!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
 }
