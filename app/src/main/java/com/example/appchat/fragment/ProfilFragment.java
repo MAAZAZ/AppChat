@@ -81,11 +81,11 @@ public class ProfilFragment extends Fragment {
         return view;
     }
 
+    //demande l'autorisation à accéder à la camera
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == image_req) {
-            //demande l'autorisation à accéder à la camera
             switch (resultCode) {
                 case Activity.RESULT_OK:
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
