@@ -3,14 +3,12 @@ package com.example.appchat.modele;
 //classe de l'utilisateur
 public class User {
     private String id;
-    private String imageUrl;
     private String Username;
 
     public User(){}
 
-    public User(String id, String imageUrl, String username, String etat) {
+    public User(String id, String username) {
         this.id = id;
-        this.imageUrl = imageUrl;
         this.Username = username;
     }
 
@@ -22,19 +20,11 @@ public class User {
         this.id = id;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
     public String getUsername() {
         return Username;
     }
 
     public void setUsername(String username) {
         Username = username;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 }
