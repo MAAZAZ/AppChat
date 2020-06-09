@@ -4,12 +4,15 @@ package com.example.appchat.modele;
 public class User {
     private String id;
     private String Username;
+    //utiliser seulement pour les images de profil de d'autre utilisateurs
+    private String imageUrl;
 
     public User(){}
 
-    public User(String id, String username) {
+    public User(String id, String username, String imageUrl) {
         this.id = id;
         this.Username = username;
+        this.imageUrl= imageUrl;
     }
 
     public String getId() {
@@ -26,5 +29,13 @@ public class User {
 
     public void setUsername(String username) {
         Username = username;
+    }
+    
+    public String getImageUrl(){ 
+        return this.imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl){ 
+        this.imageUrl=imageUrl;
     }
 }
