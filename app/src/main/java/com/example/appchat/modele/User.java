@@ -4,7 +4,7 @@ package com.example.appchat.modele;
 public class User {
     private String id;
     private String Username;
-    //utiliser seulement pour les images de profil de d'autre utilisateurs
+    //utiliser seulement pour les images de profil d'autre utilisateurs
     private String imageUrl;
 
     public User(){}
